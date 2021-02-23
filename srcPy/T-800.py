@@ -12,6 +12,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 IMAGES_PATH = os.getenv('IMAGES')
 GIFS_PATH = os.getenv('GIFS')
 
+K_DAWG = int(os.getenv('KDAWG'))
 
 
 bot = commands.Bot(command_prefix='!')
@@ -30,7 +31,7 @@ async def findClosestCommand(command):
     
     topCommands.sort(key = lambda cmd : cmd[0])
 
-    return [c[1] for c in topCommands[:3]]
+    return [c[1] for c in topCommands[: min(len(topCommands), 3)]]
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -50,12 +51,14 @@ async def test(ctx):
 @bot.command(name='kill', help='Logg out bot')
 async def kill(ctx):
     print("KILLING BOT")
-    with open(os.path.join(GIFS_PATH, 'kill.gif'), 'rb') as f:
-        killgif = discord.File(f)
+    if K_DAWG == ctx.author.id:
 
-    await ctx.send(file=killgif)
-    await bot.logout()
-    f.close()
+        with open(os.path.join(GIFS_PATH, 'kill.gif'), 'rb') as f:
+            killgif = discord.File(f)
+
+        await ctx.send(file=killgif)
+        await bot.logout()
+        f.close()
 
 
 # RUN
