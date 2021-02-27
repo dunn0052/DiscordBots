@@ -1,11 +1,14 @@
 # bot.py
 import os
+import importlib
 from Levenshtein import distance
 
 import discord
 from dotenv import load_dotenv
 
 from discord.ext import commands
+
+from ModuleLoader import ModuleLoader
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -16,7 +19,7 @@ K_DAWG = int(os.getenv('KDAWG'))
 
 
 bot = commands.Bot(command_prefix='!')
-
+mods = ModuleLoader()
 
 # EVENT HANDLERS
 @bot.event
@@ -36,9 +39,11 @@ async def findClosestCommand(command):
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
+        await ctx.send("Calculating Levenshtein edit distance...")
         lev = await findClosestCommand(ctx.invoked_with)
-        await ctx.send(f"Invalid command: Did you mean one of these? \r\n{', '.join(lev)}")
+        await ctx.send(f"Did you mean one of these: \r\n{', '.join(lev)}")
     else:
+        await ctx.send("Wat?")
         raise error
 
 
@@ -50,7 +55,7 @@ async def test(ctx):
 
 @bot.command(name='kill', help='Logg out bot')
 async def kill(ctx):
-    print("KILLING BOT")
+    print("ASSASINATION ATEMPT!")
     if K_DAWG == ctx.author.id:
 
         with open(os.path.join(GIFS_PATH, 'kill.gif'), 'rb') as f:
@@ -59,7 +64,32 @@ async def kill(ctx):
         await ctx.send(file=killgif)
         await bot.logout()
         f.close()
+    else:
+        await ctx.send(f"I’m sorry {ctx.message.author.display_name}, I’m afraid I can’t do that")
 
+@bot.command(name="load")
+async def load(ctx, module):
+    if(mods.reload_mod(module)):
+        await ctx.send(f"Loaded {module} module")
+    else:
+        await ctx.send(f"YOU HAVE FAILED")
+
+@bot.command(name="inject")
+async def inject(ctx, module, func, *args):
+    try:
+
+        # get the furncion
+        moduleFunction = mods.func_work(module, func)
+
+        # verify args
+        if mods.correctNumArgs(moduleFunction, args):
+          
+            # do work
+            await moduleFunction(ctx, *args)
+        else:
+            await ctx.send("INCORRECT ARGS, DOLT")
+    except:
+        await ctx.send(f"YOU ARE INVALID")
 
 # RUN
 bot.run(TOKEN)
