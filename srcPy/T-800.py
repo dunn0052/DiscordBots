@@ -15,6 +15,8 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 IMAGES_PATH = os.getenv('IMAGES')
 GIFS_PATH = os.getenv('GIFS')
 
+K_DAWG = int(os.getenv('KDAWG'))
+
 
 bot = commands.Bot(command_prefix='!')
 mods = ModuleLoader()
@@ -51,7 +53,6 @@ async def on_command_error(ctx, error):
 async def test(ctx):
     await ctx.send("Who is your daddy and what does he do?!")
 
-''' Commenting this out so somneone who doesn't have a kill gif breaks this and wonders, wat m8? 
 @bot.command(name='kill', help='Logg out bot')
 async def kill(ctx):
     print("ASSASINATION ATEMPT!")
@@ -65,8 +66,6 @@ async def kill(ctx):
         f.close()
     else:
         await ctx.send(f"I’m sorry {ctx.message.author.display_name}, I’m afraid I can’t do that")
-
-'''
 
 @bot.command(name="load")
 async def load(ctx, module):
