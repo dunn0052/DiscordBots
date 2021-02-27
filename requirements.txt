@@ -1,0 +1,7 @@
+# non-standard modules needed for this
+
+Levenshtein
+dotenv
+discord
+
+# I don't know that there are any specific versions so just update to the MAX!
