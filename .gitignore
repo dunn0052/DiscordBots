@@ -4,3 +4,4 @@ Private
 
 # File types
 *.pyc
+*.env
