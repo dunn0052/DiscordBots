@@ -38,6 +38,7 @@ class ModuleLoader:
                 print(f"Error loading: {module}")
                 return False
 
+        # Load in all module functions -- can be dangerous since it does this blindly
         self._functions[module] = self.load_funcs(self._modules[module])
         return True
 
