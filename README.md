@@ -35,7 +35,7 @@ But onece you get the bot loaded in discord you can load your own modules and ru
 
 and your bot should call SAMPLE_FUNC from SAMPLE.py with the args_from_discord argument
 
-While it's running you can modify SAMPLE.py and reload it by simply calling !load again
+While it's running you can modify SAMPLE.py and reload it by simply calling !load again (you can uncomment my example and pretend you wrote it)
 
 !load SAMPLE
 
